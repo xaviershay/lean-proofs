@@ -20,3 +20,18 @@ example {n : ℤ} : (2 ∣ n ^ 3 + 11 * n) := by
               = 2 * (4 * k ^ 3 + 6 * k ^ 2 + 14 * k + 6) := by linarith
       rw [p]
       exact dvd_mul_right 2 _
+
+example {n : ℕ} : (3 ∣ n ^ 3 + 11 * n) := by
+  induction n with
+  | zero => exact dvd_zero 3
+  | succ k ih =>
+    have q:   (k + 1) ^ 3 + 11 * (k + 1)
+            = k ^ 3 + 11 * k + 3 * k^2 + 3 * k + 12 := by linarith
+    rw [q]
+    rw [← Nat.dvd_add_iff_right]
+    exact Nat.dvd_of_mod_eq_zero rfl
+    rw [← Nat.dvd_add_iff_right]
+    exact Nat.dvd_mul_right 3 k
+    rw [← Nat.dvd_add_iff_right]
+    exact Nat.dvd_mul_right 3 (k ^ 2)
+    exact ih
